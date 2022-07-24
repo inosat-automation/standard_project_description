@@ -1,4 +1,4 @@
-# Project 
+# Standard project description 
 ## Структура проекта
 ```py
 project/
