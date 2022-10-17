@@ -1,5 +1,100 @@
 # Standard project description 
-## Структура проекта
+
+## Документация
+
+Текстовые файлы в формате markdown. Редактировать можно в простом блокноте, есть спец. редакторы:
+- [Obsidian.md](https://obsidian.md/)
+- [Typora](https://typora.io/)
+- ...
+
+Дизайн - [lunacy](https://icons8.ru/lunacy) Без фанатизма, главное отобразить логику работы пользователя с системой.
+
+Наилучший формат для диаграмм - svg (открытый, поддерживается вебом). Можно редактировать, например, в [Inkscape](https://inkscape.org/ru/).
+
+Диаграммы проще создавать в тексте, и автоматически генерировать изображения.
+
+Полезные диаграммы:
+- [C4](https://c4model.com/) - архитектура проекта
+- [mermaid erDiagram](https://mermaid-js.github.io/mermaid/#/entityRelationshipDiagram) - схема БД
+- [mermaid stateDiagram](stateDiagram) - диаграмма состояний
+
+Преобразовать в изображения можно с помощью [kroki](https://kroki.io/). Пакет для питона, который делает [автоматически](https://github.com/Konstantin-Dudersky/konstantin_docs).
+
+## Исходный код
+
+В качестве IDE подходит [Visual Studio Code](https://code.visualstudio.com/).
+
+### Back-end
+
+Основной язык - python.
+
+Управление зависимостями проекта - [poetry](https://python-poetry.org/).
+
+Компоненты:
+- [sqlalchemy](https://www.sqlalchemy.org/) - ORM для работы с БД. + драйвера для подключения к БД ([psycopg2](https://pypi.org/project/psycopg2/), psycopg3, ...). 
+- [alembic](https://alembic.sqlalchemy.org/en/latest/) - для миграций БД
+- [fastapi](https://fastapi.tiangolo.com/) - создания REST-сервиса для обмена со сторонними системами (1С, веб-интерфейс, ...). Работает через веб-сервер [uvicorn](https://www.uvicorn.org/).
+- [pydantic](https://pydantic-docs.helpmanual.io/) - валидация данных. Также управление переменными окружения (хранятся в файле .env).
+- [pandas](https://pandas.pydata.org/) - обработка табличных данных
+
+Отладка с помощью [debugpy](https://github.com/microsoft/debugpy).
+
+Линтеры:
+- [pyright](https://github.com/microsoft/pyright) (type checking в режиме strict).
+- flake8 с набором плагинов ([wemake-python-styleguide](https://github.com/wemake-services/wemake-python-styleguide))
+
+Форматирование кода с помощью [black](https://black.readthedocs.io/en/stable/). Макс. число символов в строке - 80.
+
+Создание документации по исходному коду - [sphinx](https://www.sphinx-doc.org/en/master/).
+
+### Front-end
+
+Наболее универсальное решение на сегодняшний день - веб.
+
+Фреймворк - [Angular](https://angular.io/). Язык Typescript.
+
+Пакеты:
+
+- [primeng](https://www.primefaces.org/primeng/) - библиотека компонентов
+- [primeflex](https://www.primefaces.org/primeflex/) - CSS верстка
+- [rxjs](https://rxjs.dev/) - библиотека для реактивности
+- [plotly](https://plotly.com/javascript/) - графики
+- [fontawesome](https://fontawesome.com/icons) - шрифт иконок, есть бесплатная версия
+
+Можно упаковывать как приложение для рабочего стола с помощью [tauri](https://tauri.app/).
+
+Форматирование кода с помощью Prettier.
+
+Создание документации по исходному коду - [compodoc](https://compodoc.app/).
+
+### Базы данных
+
+#### [SQLite](https://www.sqlite.org/index.html)
+
+Можно использовать для небольших объемов данных на встраиваемых компьютерах.
+
+#### [PostgreSQL](https://www.postgresql.org/)
+
+Полноценная серверная БД.
+
+Есть расширения для специфических задач. Например, временн**ы**е данные удобно обрабатывать с помощью [TimescaleDB](https://www.timescale.com/)
+
+Веб-интерфейс для мониторинга - [pgAdmin](https://www.pgadmin.org/)
+
+Резервное копирование данных:
+- периодическое создание резервных копий с помощью pg_dump
+- непрерывная репликация на резервный сервер
+- создание высокодоступного кластера с помощью сторонних решений - например, [patroni](https://github.com/zalando/patroni)
+
+### Коммуникация с устройствами
+
+- Siemens S7 - [python-snap7](https://github.com/gijzelaerr/python-snap7)
+- OPC UA - [asyncua](https://github.com/FreeOpcUa/opcua-asyncio)
+- Modbus TCP / RTU - [pymodbus](https://github.com/riptideio/pymodbus)
+- SNMP - [pysnmp](https://github.com/pysnmp/pysnmp)
+- сторонние HTTP API - [httpx](https://github.com/encode/httpx), [websockets](https://websockets.readthedocs.io/en/stable/)
+
+### Структура проекта
 ```py
 project/
 |---docs/ # документация
@@ -27,67 +122,31 @@ project/
 |---README.md
 ```
 
-## Документация
+## Установка
 
-Текстовые файлы в формате markdown. Редактировать можно в простом блокноте, есть спец. редакторы:
-- [Obsidian.md](https://obsidian.md/)
-- [Typora](https://typora.io/)
-- ...
+### Операционная система
 
-Дизайн - [lunacy](https://icons8.ru/lunacy) Без фанатизма, главное отобразить логику работы пользователя с системой.
+Предпочтительно использовать операционые системы на базе Linux. В качестве аппаратной части можно использовать:
 
-Наилучший формат для диаграмм - svg (открытый, поддерживается вебом). Можно редактировать, например, в [Inkscape](https://inkscape.org/ru/).
+- обычные компьютеры на базе процессоров Intel/AMD
+- встраиваемые компьютеры на базе ARM (например, Siemens IOT2050)
+- панельные компьютеры
 
-Диаграммы проще создавать в тексте, и автоматически генерировать изображения.
+### Виртуализация
 
-Полезные диаграммы:
-- [C4](https://c4model.com/) - архитектура проекта
-- [mermaid erDiagram](https://mermaid-js.github.io/mermaid/#/entityRelationshipDiagram) - схема БД
-- [mermaid stateDiagram](stateDiagram) - диаграмма состояний
+Для больших систем удобно использовать виртуализацию. В качестве системы виртуализации можно использовать бесплатный [Proxmox Virtual Environment](https://www.proxmox.com/en/proxmox-ve):
 
-Преобразовать в изображения можно с помощью [kroki](https://kroki.io/). Пакет для питона, который делает [автоматически](https://github.com/Konstantin-Dudersky/konstantin_docs).
+- поддержка гипервизора KVM (Kernel-based Virtual Machine) - гостевые системы Windows / Linux.
+- поддержка контейнеров LXC (Linux Containers) - только Linux.
+- удобное создание резервных копий с помощью [Proxmox Backup Server](https://www.proxmox.com/en/proxmox-backup-server).
+- веб-интерфейс
 
-## Исходный код
-Jetbrains хорош, но в виду неопределенности разработка кода в открытом и бесплатном редакторе [Visual Studio Code](https://code.visualstudio.com/).
+### Контейнеризация
 
-Операционная система - Linux или MacOS, Windows не лучший выбор.
+Отдельные части приложения (сервисы) упаковываются в контейнеры [Docker](https://www.docker.com/).
 
-### Server
-Основной язык - python актуальной версии (сейчас 3.10).
+Сборка образов (в т.ч. мультиплатформенная) с помощью [buildkit](https://github.com/moby/buildkit).
 
-Управление зависимостями проекта - [poetry](https://python-poetry.org/) Настройки проекта по-максимуму в pyproject.toml.
+Запуск на целевой системе с помощью [docker compose](https://docs.docker.com/compose/).
 
-Линтеры:
-- pylance (type checking в режиме strict). mypy не нужен - pylance работает быстрее и лучше.
-- pylint
-- flake8 с набором плагинов (см pyproject.toml)
-
-Форматирование кода с помощью black. Макс. число символов в строке - 80.
-
-Компоненты:
-- [sqlalchemy](https://www.sqlalchemy.org/) - ORM для работы с БД. + драйвера для подключения к БД ([psycopg2](https://pypi.org/project/psycopg2/), ...). 
-- [alembic](https://alembic.sqlalchemy.org/en/latest/) - для миграций БД
-- [fastapi](https://fastapi.tiangolo.com/) - создания REST-сервиса для обмена со сторонними системами (1С, веб-интерфейс, ...). Работает через веб-сервер [uvicorn](https://www.uvicorn.org/).
-- [pydantic](https://pydantic-docs.helpmanual.io/) - валидация данных. Также управление переменными окружения (хранятся в файле .env).
-- [asyncua](https://github.com/FreeOpcUa/opcua-asyncio) - если требуется подключение через OPC UA.
-
-Базы данных:
-- [SQLite](https://www.sqlite.org/index.html) - для небольших объемов
-- [PostgreSQL](https://www.postgresql.org/) - для любых объемов
-- [TimescaleDB](https://www.timescale.com/) - для временных данных, расширение к PostgreSQL
-
-### Client
-Наболее универсальное решение на сегодняшний день - веб.
-
-Фреймворк - [Angular](https://angular.io/). Язык Typescript.
-
-Пакеты:
-- [primeng](https://www.primefaces.org/primeng/) - библиотека компонентов
-- [primeflex](https://www.primefaces.org/primeflex/) - CSS верстка
-- [rxjs](https://rxjs.dev/) - библиотека для реактивности
-- [plotly](https://plotly.com/javascript/) - графики
-- [fontawesome](https://fontawesome.com/icons) - шрифт иконок, есть бесплатная версия
-
-Можно упаковывать как приложение для рабочего стола с помощью [tauri](https://tauri.app/).
-
-Форматирование кода с помощью Prettier. Табуляция 4 пробела.
+Веб-интерфейс для управления - [portainer](https://www.portainer.io/).
